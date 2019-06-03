@@ -1,2 +1,2 @@
-# data-pass-composer
-I will add later
+# Data pass composer
+Easy way to handle binary messages
