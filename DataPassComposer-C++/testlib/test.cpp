@@ -8,8 +8,10 @@ using namespace std;
 
 int main()
 {
-	MailComposer.begin(2, 5);
-	cout << MailComposer.GetAmountClients() << " " << MailComposer.GetAmountBoxes() << endl;
+	Composer.begin(2, 5);
+	Composer.Parse(0xFF);
+	Composer.Parse(0xFF);
+	cout << Composer.GetAmountBoxes() << " " << Composer.GetAmountFields() << endl;
 	cin.get();
 	return 0;
 }
