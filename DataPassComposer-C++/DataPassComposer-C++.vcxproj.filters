@@ -12,12 +12,18 @@
     <ClInclude Include="DataPassComposer-lib\DataPassComposer.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="DataPassComposer-lib\ComposerBox.h">
+      <Filter>lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="testlib\test.cpp">
       <Filter>testlib</Filter>
     </ClCompile>
     <ClCompile Include="DataPassComposer-lib\DataPassComposer.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="DataPassComposer-lib\ComposerBox.cpp">
       <Filter>lib</Filter>
     </ClCompile>
   </ItemGroup>

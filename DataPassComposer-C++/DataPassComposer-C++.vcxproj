@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataPassComposer-lib\ComposerBox.h" />
     <ClInclude Include="DataPassComposer-lib\DataPassComposer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataPassComposer-lib\ComposerBox.cpp" />
     <ClCompile Include="DataPassComposer-lib\DataPassComposer.cpp" />
     <ClCompile Include="testlib\test.cpp" />
   </ItemGroup>
