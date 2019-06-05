@@ -18,5 +18,6 @@ namespace DataPassComposer
 		~ComposerBox();
 
 		friend class ComposerClass;
+		friend class Composer;
 	};
 }

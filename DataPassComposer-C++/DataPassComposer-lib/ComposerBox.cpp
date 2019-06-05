@@ -1,8 +1,5 @@
 #include "ComposerBox.h"
-#include "DataPassComposer.h"
-#include <cstdint>
-#include <vector>
-using namespace std;
+
 namespace DataPassComposer
 {
 	void ComposerBox::SetField(uint16_t index, std::vector<uint8_t> vec)

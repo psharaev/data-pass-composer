@@ -14,7 +14,8 @@ namespace DataPassComposer
 	uint16_t ComposerClass::CommandLength = 0;
 	uint16_t ComposerClass::NumberByteParse = 0;
 
-	std::map<uint16_t, std::vector<uint8_t>> ComposerClass::ComposerBoxes;
+	std::map<uint16_t, ComposerBox*> ComposerClass::ComposerBoxes;
+	uint16_t ComposerClass::CreatorComposerBoxesIterator = 0;
 
 	ComposerClass::ComposerClass()
 	{
@@ -46,7 +47,7 @@ namespace DataPassComposer
 
 	void ComposerClass::ProcessCommand()
 	{
-		//ComposerClass::ComposerBoxes
+		ComposerClass::ComposerBoxes[CommandIndexBox()]->SetField(CommandIndexField(), CommandContent());
 	}
 
 	uint16_t ComposerClass::CommandIndexBox()
@@ -67,9 +68,10 @@ namespace DataPassComposer
 
 	std::vector<uint8_t> ComposerClass::CommandContent()
 	{
-		std::vector<uint8_t> val(ComposerClass::Command);
-		val.erase(val.begin() + 0, val.begin() + 2 + ComposerClass::AmountBoxBytes + ComposerClass::AmountFieldBytes);
-		return std::vector<uint8_t>();
+		std::vector<uint8_t> val = {};
+		for (int i = 2 + ComposerClass::AmountBoxBytes + ComposerClass::AmountFieldBytes; i < ComposerClass::CommandLength; i++)
+			val.push_back(ComposerClass::Command[i]);
+		return val;
 	}
 
 	void ComposerClass::Parse(uint8_t cmd)
@@ -95,15 +97,31 @@ namespace DataPassComposer
 		}
 	}
 
-	void ComposerClass::AddBox(ComposerBox &box)
+	bool ComposerClass::AddBox(ComposerBox & box)
 	{
-		ComposerClass::ComposerBoxes[0] = std::vector<uint8_t>();
+		ComposerClass::ComposerBoxes[ComposerClass::CreatorComposerBoxesIterator] = &box;
+		ComposerClass::CreatorComposerBoxesIterator++;
+		return true;
 	}
 
-
-
-	void ComposerClass::DeleteBox(ComposerBox &box)
+	bool ComposerClass::AddBox(ComposerBox & box, uint16_t & index)
 	{
+		return false;
+	}
+
+	bool ComposerClass::AddBoxForcibly(ComposerBox & box, uint16_t & index)
+	{
+		return false;
+	}
+
+	bool ComposerClass::RemoveBox(ComposerBox & box)
+	{
+		return true;
+	}
+
+	bool ComposerClass::RemoveBox(uint16_t & box)
+	{
+		return false;
 	}
 
 	ComposerClass Composer;
