@@ -19,13 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataPassComposer-lib\ComposerBox.h" />
-    <ClInclude Include="DataPassComposer-lib\DataPassComposer.h" />
+    <ClInclude Include="src\ComposerBox.h" />
+    <ClInclude Include="src\DataPassComposer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataPassComposer-lib\ComposerBox.cpp" />
-    <ClCompile Include="DataPassComposer-lib\DataPassComposer.cpp" />
-    <ClCompile Include="testlib\test.cpp" />
+    <ClCompile Include="src\ComposerBox.cpp" />
+    <ClCompile Include="src\DataPassComposer.cpp" />
+    <ClCompile Include="examples\test.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -85,7 +85,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\user\Documents\data-pass-composer\DataPassComposer-C++\DataPassComposer-lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user\Documents\data-pass-composer\C++\DataPassComposer\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -104,7 +104,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\user\Documents\data-pass-composer\DataPassComposer-C++\DataPassComposer-lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user\Documents\data-pass-composer\DataPassComposer-C++\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -12,8 +12,8 @@ int main()
 
 	ComposerBox Box0;
 	ComposerBox Box1;
-	Composer.AddBox(Box0);
-	Composer.AddBox(Box1);
+	Composer.AddBox(Box0,0);
+	Composer.AddBox(Box1,1);
 
 	Composer.Parse(0x00);
 	Composer.Parse(0x06);// 6 byte
@@ -46,6 +46,8 @@ int main()
 	Composer.Parse(0x00);// 9
 	Composer.Parse(0x0F);// 15
 	cout << Box0.GetInt(0) << endl;
+
+	Box0.Direct(15, { 0x12,0x12 });
 	
 	cin.get();
 	return 0;
