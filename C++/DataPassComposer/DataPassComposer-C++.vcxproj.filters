@@ -5,26 +5,29 @@
       <UniqueIdentifier>{6c1f94b5-51ea-4343-873c-3c6cf6fec79e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src">
-      <UniqueIdentifier>{2fafb0f5-f7a6-45ce-aa17-082fff092347}</UniqueIdentifier>
+      <UniqueIdentifier>{863d5b47-0f14-4e9f-94aa-bd1d1e7ac795}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\DataPassComposer.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ComposerBox.h">
-      <Filter>src</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="examples\test.cpp">
       <Filter>examples</Filter>
     </ClCompile>
-    <ClCompile Include="src\DataPassComposer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ComposerBox.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\DataPassComposer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ComposerBox.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataPassComposer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Macros.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

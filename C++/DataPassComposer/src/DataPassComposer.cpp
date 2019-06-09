@@ -2,21 +2,14 @@
 
 namespace DataPassComposer
 {
-#pragma region ComposerClass
-
-	uint16_t ComposerClass::AmountBoxes = 0;
-	uint16_t ComposerClass::AmountFields = 0;
-
-	uint8_t ComposerClass::AmountBoxBytes = 1;
-	uint8_t ComposerClass::AmountFieldBytes = 1;
-
 	std::vector<uint8_t> ComposerClass::Command = {};
 	uint16_t ComposerClass::CommandLength = 0;
 	uint16_t ComposerClass::NumberByteParse = 0;
 
-	std::map<uint16_t, ComposerBox*> ComposerClass::ComposerBoxes = {};
-	uint16_t ComposerClass::CreatorComposerBoxesIterator = 0;
-	std::set<uint16_t> ComposerClass::IndexBoxDirect = {};
+	std::map<box_t, ComposerBox*> ComposerClass::ComposerBoxes = {};
+	std::set<box_t> ComposerClass::IndexBoxDirect = {};
+
+	void(*ComposerClass::NotImplementedFunc)(box_t, field_t, std::vector<uint8_t>) = nullptr;
 
 	ComposerClass::ComposerClass()
 	{
@@ -32,21 +25,34 @@ namespace DataPassComposer
 
 	/*private*/ void ComposerClass::ProcessCommand()
 	{
+		try
+		{
+			ComposerClass::ComposerBoxes.at(CommandIndexBox());
+		}
+		catch (std::out_of_range)
+		{
+			if (ComposerClass::NotImplementedFunc != nullptr)
+			{
+				NotImplementedFunc(CommandIndexBox(), CommandIndexField(), CommandContent());
+			}
+			return;
+		}
+		
 		ComposerClass::ComposerBoxes[CommandIndexBox()]->SetField(CommandIndexField(), CommandContent());
 	}
 
-	/*private*/ uint16_t ComposerClass::CommandIndexBox()
+	/*private*/ box_t ComposerClass::CommandIndexBox()
 	{
 		uint16_t val = 0;
-		for (int i = 2; i < 2 + ComposerClass::AmountBoxBytes; i++)
+		for (int i = 2; i < 2 + BoxBytes; i++)
 			val = (val << 8) | ComposerClass::Command[i];
 		return val;
 	}
 
-	/*private*/ uint16_t ComposerClass::CommandIndexField()
+	/*private*/ field_t ComposerClass::CommandIndexField()
 	{
 		uint16_t val = 0;
-		for (int i = 2 + ComposerClass::AmountBoxBytes; i < 2 + ComposerClass::AmountBoxBytes + ComposerClass::AmountFieldBytes; i++)
+		for (int i = 2 + BoxBytes; i < 2 + BoxBytes + FieldBytes; i++)
 			val = (val << 8) | ComposerClass::Command[i];
 		return val;
 	}
@@ -54,31 +60,9 @@ namespace DataPassComposer
 	/*private*/ std::vector<uint8_t> ComposerClass::CommandContent()
 	{
 		std::vector<uint8_t> val = {};
-		for (int i = 2 + ComposerClass::AmountBoxBytes + ComposerClass::AmountFieldBytes; i < ComposerClass::CommandLength; i++)
+		for (int i = 2 + BoxBytes + FieldBytes; i < ComposerClass::CommandLength; i++)
 			val.push_back(ComposerClass::Command[i]);
 		return val;
-	}
-
-	bool ComposerClass::setup(uint8_t AmountBoxBytes, uint8_t AmountFieldBytes)
-	{
-		if (AmountBoxBytes * AmountFieldBytes == 0)
-			return false;
-
-		ComposerClass::AmountBoxBytes = AmountBoxBytes;
-		ComposerClass::AmountFieldBytes = AmountFieldBytes;
-		ComposerClass::AmountBoxes = (1 << (AmountBoxBytes * 8)) - 1;
-		ComposerClass::AmountFields = (1 << (AmountFieldBytes * 8)) - 1;
-		return true;
-	}
-
-	uint16_t ComposerClass::GetAmountBoxes()
-	{
-		return ComposerClass::AmountBoxes;
-	}
-
-	uint16_t ComposerClass::GetAmountFields()
-	{
-		return ComposerClass::AmountFields;
 	}
 
 	void ComposerClass::Parse(uint8_t cmd)
@@ -104,14 +88,14 @@ namespace DataPassComposer
 		}
 	}
 
-	bool ComposerClass::AddBox(ComposerBox & box, uint16_t index)
+	bool ComposerClass::AddBox(ComposerBox & box, box_t index)
 	{
 		ComposerClass::ComposerBoxes[index] = &box;
 		box.AddBox(index);
 		return true;
 	}
 
-	bool ComposerClass::AddBoxForcibly(ComposerBox & box, uint16_t & index)
+	bool ComposerClass::AddBoxForcibly(ComposerBox & box, box_t & index)
 	{
 		ComposerClass::ComposerBoxes[index] = &box;
 		box.AddBox(index);
@@ -123,9 +107,14 @@ namespace DataPassComposer
 		return false;
 	}
 
-	bool ComposerClass::RemoveBox(uint16_t & box)
+	bool ComposerClass::RemoveBox(box_t & box)
 	{
 		return false;
+	}
+
+	void ComposerClass::OnNotImplemented(void(*func)(box_t, field_t, std::vector<uint8_t>))
+	{
+		ComposerClass::NotImplementedFunc = func;
 	}
 
 	std::vector<uint8_t> ComposerClass::Transmit()
@@ -135,6 +124,4 @@ namespace DataPassComposer
 	}
 
 	ComposerClass Composer;
-
-#pragma endregion
 }

@@ -19,13 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ComposerBox.h" />
-    <ClInclude Include="src\DataPassComposer.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="examples\test.cpp" />
     <ClCompile Include="src\ComposerBox.cpp" />
     <ClCompile Include="src\DataPassComposer.cpp" />
-    <ClCompile Include="examples\test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ComposerBox.h" />
+    <ClInclude Include="src\DataPassComposer.h" />
+    <ClInclude Include="src\Macros.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
