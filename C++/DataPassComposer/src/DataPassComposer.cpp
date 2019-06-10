@@ -18,32 +18,33 @@ namespace DataPassComposer
 		ComposerClass::IndexBoxDirect.clear();
 	}
 
-	/*private*/ void ComposerClass::IndexingBox(uint16_t index)
+	/*private*/ void ComposerClass::IndexBox(box_t box_id)
 	{
-		ComposerClass::IndexBoxDirect.insert(index);
+		ComposerClass::IndexBoxDirect.insert(box_id);
 	}
 
 	/*private*/ void ComposerClass::ProcessCommand()
 	{
+		box_t box_id = CommandIndexBox();
 		try
 		{
-			ComposerClass::ComposerBoxes.at(CommandIndexBox());
+			ComposerClass::ComposerBoxes.at(box_id);
 		}
 		catch (std::out_of_range)
 		{
 			if (ComposerClass::NotImplementedFunc != nullptr)
 			{
-				NotImplementedFunc(CommandIndexBox(), CommandIndexField(), CommandContent());
+				NotImplementedFunc(box_id, CommandIndexField(), CommandContent());
 			}
 			return;
 		}
-		
-		ComposerClass::ComposerBoxes[CommandIndexBox()]->SetField(CommandIndexField(), CommandContent());
+
+		ComposerClass::ComposerBoxes[box_id]->SetField(CommandIndexField(), CommandContent());
 	}
 
 	/*private*/ box_t ComposerClass::CommandIndexBox()
 	{
-		uint16_t val = 0;
+		box_t val = 0;
 		for (int i = 2; i < 2 + BoxBytes; i++)
 			val = (val << 8) | ComposerClass::Command[i];
 		return val;
@@ -51,7 +52,7 @@ namespace DataPassComposer
 
 	/*private*/ field_t ComposerClass::CommandIndexField()
 	{
-		uint16_t val = 0;
+		field_t val = 0;
 		for (int i = 2 + BoxBytes; i < 2 + BoxBytes + FieldBytes; i++)
 			val = (val << 8) | ComposerClass::Command[i];
 		return val;
@@ -88,17 +89,30 @@ namespace DataPassComposer
 		}
 	}
 
-	bool ComposerClass::AddBox(ComposerBox & box, box_t index)
+	void ComposerClass::Parse(std::vector<uint8_t> cmd)
 	{
-		ComposerClass::ComposerBoxes[index] = &box;
-		box.AddBox(index);
+		if (!cmd.empty())
+			for (auto& i : cmd)
+				ComposerClass::Parse(i);
+	}
+
+	bool ComposerClass::AddBox(ComposerBox & box, box_t box_id)
+	{
+		try
+		{
+			ComposerClass::ComposerBoxes.at(box_id);
+			return false;
+		}
+		catch (std::out_of_range) {}
+		ComposerClass::ComposerBoxes[box_id] = &box;
+		box.AddBox(box_id);
 		return true;
 	}
 
-	bool ComposerClass::AddBoxForcibly(ComposerBox & box, box_t & index)
+	bool ComposerClass::AddBoxForcibly(ComposerBox & box, box_t box_id)
 	{
-		ComposerClass::ComposerBoxes[index] = &box;
-		box.AddBox(index);
+		ComposerClass::ComposerBoxes[box_id] = &box;
+		box.AddBox(box_id);
 		return true;
 	}
 
@@ -107,7 +121,7 @@ namespace DataPassComposer
 		return false;
 	}
 
-	bool ComposerClass::RemoveBox(box_t & box)
+	bool ComposerClass::RemoveBox(box_t & box_id)
 	{
 		return false;
 	}
@@ -119,7 +133,21 @@ namespace DataPassComposer
 
 	std::vector<uint8_t> ComposerClass::Transmit()
 	{
+		std::vector<uint8_t> cmd = {};
+		for (auto& i : ComposerClass::IndexBoxDirect)
+		{
+			for (auto& item : ComposerClass::ComposerBoxes[i]->Directs)
+			{
+				cmd.insert(cmd.end(), item.second.begin(), item.second.end());
+			}
+			ComposerClass::ComposerBoxes[i]->ClearDirects();
+		}
 		ComposerClass::IndexBoxDirect.clear();
+		return cmd;
+	}
+
+	std::vector<uint8_t> ComposerClass::Transmit(box_t box_id, field_t field_id, std::vector<uint8_t>)
+	{
 		return std::vector<uint8_t>();
 	}
 

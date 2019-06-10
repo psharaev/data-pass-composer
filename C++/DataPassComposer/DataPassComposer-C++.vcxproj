@@ -26,6 +26,7 @@
   <ItemGroup>
     <ClInclude Include="src\ComposerBox.h" />
     <ClInclude Include="src\DataPassComposer.h" />
+    <ClInclude Include="src\ExtensionMethods.h" />
     <ClInclude Include="src\Macros.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

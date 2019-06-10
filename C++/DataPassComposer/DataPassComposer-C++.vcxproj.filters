@@ -29,5 +29,8 @@
     <ClInclude Include="src\Macros.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\ExtensionMethods.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
